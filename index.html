@@ -136,7 +136,7 @@
         <h1>KlackerKampf der Titanen</h1>
         <div id="countdown">Countdown: 5</div>
         <div id="quote"></div>
-        <button id="newQuoteButton " onclick="generateNewQuote()">Neues Zitat</button>
+        <button id="newQuoteButton" onclick="generateNewQuote()">Neues Zitat</button>
         <input type="text" id="inputField" placeholder="Text hier eingeben..." disabled>
         <div id="progress">
             <div id="progressBar"></div>
@@ -171,6 +171,30 @@
     </div>
 
     <script>
+let quotes = [
+    "Der einzige Weg, großartige Arbeit zu leisten, ist, die Arbeit zu lieben, die du tust.",
+    "Das Leben ist das, was passiert, während du eifrig dabei bist, andere Pläne zu machen.",
+    "Die beste Zeit, einen Baum zu pflanzen, war vor 20 Jahren. Die zweitbeste Zeit ist jetzt.",
+    "Die Zukunft gehört denen, die an die Schönheit ihrer Träume glauben.",
+    "Erfolg ist nicht der Schlüssel zum Glück. Glück ist der Schlüssel zum Erfolg.",
+    "Was du tust, ist nicht so wichtig wie die Art und Weise, wie du es tust.",
+    "Die einzige Grenze für unseren Realisierungsgrad von morgen wird unsere Zweifel an heute sein.",
+    "Die einzige Möglichkeit, großartige Arbeit zu leisten, ist, die Arbeit zu lieben, die du tust.",
+    "Die beste Rache ist ein gewaltiger Erfolg.",
+    "Wenn du einen Traum hast, dann schütze ihn.",
+    "Die einzige Person, die dich aufhalten kann, bist du selbst.",
+    "Die größten Erfolge sind oft die, die man nicht für möglich gehalten hat.",
+    "Die einzige Art, die Zukunft vorherzusagen, besteht darin, sie zu schaffen.",
+    "Wenn du nicht bereit bist, dein Leben zu ändern, wird sich nichts ändern.",
+    "Die beste Art, die Zukunft vorherzusagen, ist, sie zu gestalten.",
+    "Die einzige Grenze für unseren Realisierungsgrad von morgen wird unsere Zweifel an heute sein.",
+    "Die beste Zeit, einen Baum zu pflanzen, war vor 20 Jahren. Die zweitbeste Zeit ist jetzt.",
+    "Die Zukunft gehört denen, die an die Schönheit ihrer Träume glauben.",
+    "Die einzige Möglichkeit, großartige Arbeit zu leisten, ist, die Arbeit zu lieben, die du tust.",
+    "Die beste Rache ist ein gewaltiger Erfolg.",
+    "Wenn du einen Traum hast, dann schütze ihn."
+];
+
 let quote = '';
 let startTime, endTime;
 let isCompleted = false;
@@ -183,21 +207,15 @@ const itemsPerPage = 10;
 let currentWordIndex = 0;
 let words;
 
-// Funktion, um ein Zitat von der Zen Quotes API zu laden
-async function loadQuote() {
-    try {
-        const response = await fetch('https://zenquotes.io/api/random');
-        const data = await response.json();
-        quote = data[0].q; // Zitat aus der API-Antwort extrahieren
-        document.getElementById('quote').innerHTML = quote.split(' ').map((word, index) => `<span id="word-${index}">${word}</span>`).join(' ');
-        currentWordIndex = 0;
-        words = quote.split(' ');
-        inputField.value = '';
-        inputField.placeholder = words[currentWordIndex];
-        updateProgress();
-    } catch (error) {
-        console.error('Error fetching quote:', error);
-    }
+function loadQuote() {
+    const randomIndex = Math.floor(Math.random() * quotes.length);
+    quote = quotes[randomIndex];
+    document.getElementById('quote').innerHTML = quote.split(' ').map((word, index) => `<span id="word-${index}">${word}</span>`).join(' ');
+    currentWordIndex = 0;
+    words = quote.split(' ');
+    inputField.value = '';
+    inputField.placeholder = words[currentWordIndex];
+    updateProgress();
 }
 
 // Countdown Timer
@@ -256,7 +274,7 @@ inputField.addEventListener('keydown', (event) => {
     if (event.key === ' ' && currentWordIndex < words.length - 1) {
         event.preventDefault(); // Verhindert das Einfügen eines Leerzeichens
         checkCurrentWord();
-    } else if (event.key .length === 1) { // Nur Einzelzeichen berücksichtigen
+    } else if (event.key.length === 1) { // Nur Einzelzeichen berücksichtigen
         checkCurrentChar(event.key);
     }
 });
@@ -338,7 +356,7 @@ function finishTyping() {
     setTimeout(() => showPromptForName(wpm, timeDiff.toFixed(2)), 100);
 }
 
-function showPromptForName(wpm, time) {
+function showPromptForName(wpm, time ) {
     const name = prompt("Gib deinen Spitznamen für die Bestenliste ein:");
     if (name) {
         leaderboard.push({ name, wpm, time });
@@ -370,7 +388,7 @@ function changePage(action) {
     if (action === 'prev' && currentPage > 1) currentPage--;
     if (action === 'next' && currentPage < totalPages) currentPage++;
     if (action === 'last') currentPage = totalPages;
-    render Leaderboard();
+    renderLeaderboard();
 }
 
 function goToPage() {
